@@ -116,7 +116,7 @@ def create_coins():
     if not succ:
         return json_resp(500, False, err)
     
-    return json_resp(200, True, f"You have created a player")
+    return json_resp(200, True, f"You have created a coins")
 
 @app.route("/shop/display", methods=['GET'])
 def shop_display():
@@ -213,6 +213,18 @@ def player_level_up():
         return json_resp(500, False, err)
     
     return json_resp(200, True, "You have levelop up")
+
+@app.route("/coins/gain", methods=['POST'])
+def coins_gain():
+    data: dict = request.get_json()
+
+    coins = data.get("coins")
+
+    coins = db.get(Coins, 1)
+
+    coins.amount += int(coins)
+
+    return json_resp(200, True, "You have gained coins")
 
 if __name__ == '__main__':
     app = run_app()
