@@ -86,7 +86,15 @@ def defeat_boss():
 
     number = data.get("pts")
 
-    stmt = select(stmt).where(Player.id == 1)
+    player = db.get(Player, 1)
+    
+    if not player:
+        return json_resp(404, False, "You dit not find a player")
+    
+    player.points_number += 1
+
+    return json_resp(200, True, "You have defeated a boss")
+
 
 if __name__ == '__main__':
     app = run_app()
