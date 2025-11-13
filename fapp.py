@@ -88,8 +88,6 @@ def defeat_boss():
 
     stmt = select(stmt).where(Player.id == 1)
 
-
-
 if __name__ == '__main__':
     app = run_app()
     Base.metadata.create_all(engine)
