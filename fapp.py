@@ -89,12 +89,46 @@ def defeat_boss():
     player = db.get(Player, 1)
     
     if not player:
-        return json_resp(404, False, "You dit not find a player")
+        return json_resp(404, False, "You did not find a player")
     
-    player.points_number += 1
+    player.points_number += int(number)
+
+    succ, err = commit_sesison()
+    if not succ:
+        return json_resp(500, False, err)
 
     return json_resp(200, True, "You have defeated a boss")
 
+@app.route("/shop/unock", methods=['PATCH'])
+def shop_unlock():
+    item1 = select(Shop).where(Shop.id == 1)
+    item2 = select(Shop).where(Shop.id == 2)
+    playerstmt = select(Player).where(Player.id == 1)
+
+    ishop1 = db.scalars(item1).first()
+    ishop2 = db.scalars(item2).first()
+    player = db.scalars(playerstmt).first()
+
+    if not ishop1 or not ishop2:
+        return json_resp(204, False, "there is no shop item")
+    
+    if not player:
+        return json_resp(204, False, "There is no player")
+    
+    if player.points_number >= 100:
+        print("You have unlocked item 1")
+        ishop1.is_unlocked = True
+
+    if player.points_number >= 1000:
+        print("You have unlocked item 1")
+        ishop2.is_unlocked = True
+
+    succ, err = commit_sesison()
+    if not succ:
+        return json_resp(500, False, err)
+    
+    return json_resp(200, True, "You have unlocked shop")
+    
 
 if __name__ == '__main__':
     app = run_app()
