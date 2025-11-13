@@ -1,18 +1,20 @@
 @import "tailwindcss";
+
 body {
-  @apply p-0 ;
+  @apply bg-[#eeeeee];
+}
+
+.disableBtn {
 }
 
 @layer base {
-  p {
-    @apply p-0 m-0;
-  }
 }
 
 @layer components {
-
+  .disableButton {
+    @apply;
+  }
 }
 
 @layer utilities {
-
 }
