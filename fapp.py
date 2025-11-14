@@ -82,7 +82,7 @@ def run_app():
 
 @app.route("/player/create", methods=['GET'])
 def create_player():
-    user = Player(points_number=0, level=0)
+    user = Player(level=0)
 
     db.add(user)
     succ, err = commit_sesison()
@@ -130,15 +130,19 @@ def player_level_up():
     
     return json_resp(200, True, "You have levelop up")
 
-@app.route("/coins/gain", methods=['POST'])
+@app.route("/coins/gain", methods=['PATCH'])
 def coins_gain():
     data: dict = request.get_json()
 
-    coins = data.get("coins")
+    coins_data = data.get("coins")
 
     coins = db.get(Coins, 1)
 
-    coins.amount += int(coins)
+    coins.amount += int(coins_data)
+
+    succ, err = commit_sesison()
+    if not succ:
+        return json_resp(500, False, err)
 
     return json_resp(200, True, "You have gained coins")
 
@@ -157,6 +161,22 @@ def shop_level_item():
         return json_resp(500, False, err)
     
     return json_resp(200, False, "You have leveled up")
+
+@app.route("/all/get", methods=['GET'])
+def get_all():
+    stmt = select(Shop)
+
+    items = db.scalars(stmt).all()
+    player = db.get(Player, 1)
+    coins = db.get(Coins, 1)
+
+    data = {
+        "items": [item.get_data() for item in items],
+        "player": player.get_data(),
+        "coins": coins.get_data(),
+    }
+
+    return json_resp(200, True, data)
 
 if __name__ == '__main__':
     app = run_app()
