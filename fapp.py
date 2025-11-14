@@ -165,7 +165,7 @@ def coins_gain():
     return json_resp(200, True, "You have gained coins")
 
 @app.route("/coins/minus", methods=['PATCH'])
-def coins_minus`():
+def coins_minus():
     data: dict = request.get_json()
 
     coins_data = data.get("coins")
