@@ -1,2 +1,9 @@
 @import "tailwindcss";
 
+body {
+    background-image: url("/home/zieks/Programming/hackathon/Hackathon_OnlyLegendsKnow/frontend/src/assets/gameAssets/BG_1.svg");
+}
+
+p, span, h3 {
+    @apply text-white;
+}
