@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import BossImage from "../assets/gameAssets/Boss.svg";
 
 const Game = () => {
   // Logic
@@ -72,6 +73,7 @@ const Game = () => {
   // Click Logic
   const handleClickDamage = () => {
     setHp((prev) => prev - damage);
+
   };
 
   // Shop
@@ -80,6 +82,7 @@ const Game = () => {
     if (coins >= itemDamagePrice) {
       setCoins((prev) => prev - itemDamagePrice);
       setDamage((d) => d + 1);
+      setItemDamageLevel(prev => prev + 1);
       setItemDamagePrice((prev) => Math.floor(prev * 1.5));
 
       const res = await fetch("http://127.0.0.1:5000/shop/item_level", {
@@ -146,45 +149,56 @@ const Game = () => {
     }
   };
 
+  const hpBar = () => {};
+
   return (
     <main>
       {/* Nav */}
 
       {/* Level & Coins */}
-      <section className="flex justify-between px-5 text-xl">
+      <section className="flex justify-between px-5 text-xl bg-amber-500">
         <span className="">Level: {level}</span>
         <span className="text-amber-400 font-bold ">Coins: {coins}</span>
       </section>
 
+            {/* Stats */}
+      <section className="m-0 justify-center flex rounded-2xl">
+        <div className="px-3 py-1 m-0 bg-transparent">
+          <h3 className="w-20 h-full bg-red-800 text-white rounded-2xl p-3">HP: {hp}</h3>
+        </div>
+      </section>
+
       {/* Enemy */}
-      <section className="flex justify-center mt-20">
+      <section className="flex justify-center mt-5">
         <button
-          className="size-50 rounded-full bg-amber-500 transform transition-transform active:scale-80 duration-200"
+          className=" rounded-full bg-transparent transform transition-transform active:scale-80 duration-200 "
           onClick={handleClickDamage}
         >
-          Enemy
+          <img
+            className="w-80"
+            src="https://img.pikbest.com/png-images/20241003/scary-halloween-pumpkin-vector-icon-art_10923868.png!sw800"
+          />
         </button>
+
       </section>
 
-      {/* Stats */}
-      <section className="mt-4">
-        <h3 className="px-3 py-1 bg-red-800 text-white">HP: {hp}</h3>
-      </section>
+
 
       {/* Shop */}
-      <section className="w-[50%] mx-auto">
+      <section className="justify-center flex gap-7">
         {/* Item 1 */}
-        <div className="flex justify-between">
+        <div className="flex justify-between bg-amber-950 rounded-2xl p-3 gap-20">
           <div>
-            <h3>Item Damage</h3>
-            <p>Adds Damage</p>
-            <span>
-              {damage} ➡️ {damage + 1}
+            <h3 className="text-xl font-bold">Item Damage</h3>
+            <p className="opacity-80">Adds Damage</p>
+            <span className="opacity-90">
+              {damage} -&gt; {damage + 1}
             </span>
           </div>
 
-          <div className="flex flex-col">
-            <span>Price: {itemDamagePrice}</span>
+          <div className="flex flex-col  bg-amber-950">
+            <span className="m-0 p-0">Price: {itemDamagePrice}</span>
+            <span>Level: {itemDamageLevel}</span>
             <button
               onClick={itemAddDamage}
               className={`px-4 py-1 rounded mt-auto ${
@@ -197,14 +211,14 @@ const Game = () => {
         </div>
 
         {/* Item 2 */}
-        <div className="flex justify-between">
+        <div className="flex justify-between bg-amber-950 rounded-2xl p-3 gap-10">
           <div>
-            <h3>Item Auto Clicker</h3>
-            <p>Auto Click per Seconds</p>
-            <span>{autoClickInterval / 1000}s -0.3s</span>
+            <h3 className="text-xl font-bold">Item Auto Clicker</h3>
+            <p className="opacity-80">Auto Click per Seconds</p>
+            <span className="opacity-80">{autoClickInterval / 1000}s -0.3s</span>
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col ">
             <span>Price: {itemAutoClickPrice}</span>
             <span>Level: {itemAutoClickLevel}</span>
             <button
