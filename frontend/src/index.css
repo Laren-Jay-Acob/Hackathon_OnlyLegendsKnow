@@ -1,20 +1,2 @@
 @import "tailwindcss";
 
-body {
-  @apply bg-[#eeeeee];
-}
-
-.disableBtn {
-}
-
-@layer base {
-}
-
-@layer components {
-  .disableButton {
-    @apply;
-  }
-}
-
-@layer utilities {
-}
