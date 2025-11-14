@@ -68,7 +68,7 @@ class Coins(Base):
     def get_data(self):
         return {
             "id": self.id,
-            "shop_item": self.amount,
+            "amount": self.amount,
         }
 
 def run_app():
