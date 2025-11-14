@@ -164,6 +164,22 @@ def coins_gain():
 
     return json_resp(200, True, "You have gained coins")
 
+@app.route("/coins/minus", methods=['PATCH'])
+def coins_minus`():
+    data: dict = request.get_json()
+
+    coins_data = data.get("coins")
+
+    coins = db.get(Coins, 1)
+
+    coins.amount -= int(coins_data)
+
+    succ, err = commit_sesison()
+    if not succ:
+        return json_resp(500, False, err)
+
+    return json_resp(200, True, "You have gained coins")
+
 @app.route("/shop/item_level", methods=['PATCH'])
 def shop_level_item():
     data: dict = request.get_json()

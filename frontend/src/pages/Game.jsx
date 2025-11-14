@@ -73,7 +73,6 @@ const Game = () => {
   // Click Logic
   const handleClickDamage = () => {
     setHp((prev) => prev - damage);
-
   };
 
   // Shop
@@ -82,7 +81,7 @@ const Game = () => {
     if (coins >= itemDamagePrice) {
       setCoins((prev) => prev - itemDamagePrice);
       setDamage((d) => d + 1);
-      setItemDamageLevel(prev => prev + 1);
+      setItemDamageLevel((prev) => prev + 1);
       setItemDamagePrice((prev) => Math.floor(prev * 1.5));
 
       const res = await fetch("http://127.0.0.1:5000/shop/item_level", {
@@ -107,6 +106,16 @@ const Game = () => {
       });
       const dataprice = resprice.json();
       console.log(dataprice);
+
+      const resCoin = await fetch("http://127.0.0.1:5000/coins/minus", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ coins: itemDamagePrice }),
+      });
+      const dataCoin = resCoin.json();
+      console.log(dataCoin);
     }
   };
 
@@ -145,6 +154,16 @@ const Game = () => {
         const dataprice = resprice.json();
         console.log(itemAutoClickPrice);
         console.log(dataprice);
+
+        const resCoin = await fetch("http://127.0.0.1:5000/coins/minus", {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ coins: itemAutoClickPrice }),
+        });
+        const dataCoin = resCoin.json();
+        console.log(dataCoin);
       }
     }
   };
@@ -161,10 +180,12 @@ const Game = () => {
         <span className="text-amber-400 font-bold ">Coins: {coins}</span>
       </section>
 
-            {/* Stats */}
+      {/* Stats */}
       <section className="m-0 justify-center flex rounded-2xl">
         <div className="px-3 py-1 m-0 bg-transparent">
-          <h3 className="w-20 h-full bg-red-800 text-white rounded-2xl p-3">HP: {hp}</h3>
+          <h3 className="w-20 h-full bg-red-800 text-white rounded-2xl p-3">
+            HP: {hp}
+          </h3>
         </div>
       </section>
 
@@ -179,10 +200,7 @@ const Game = () => {
             src="https://img.pikbest.com/png-images/20241003/scary-halloween-pumpkin-vector-icon-art_10923868.png!sw800"
           />
         </button>
-
       </section>
-
-
 
       {/* Shop */}
       <section className="justify-center flex gap-7">
@@ -215,7 +233,9 @@ const Game = () => {
           <div>
             <h3 className="text-xl font-bold">Item Auto Clicker</h3>
             <p className="opacity-80">Auto Click per Seconds</p>
-            <span className="opacity-80">{autoClickInterval / 1000}s -0.3s</span>
+            <span className="opacity-80">
+              {autoClickInterval / 1000}s -0.3s
+            </span>
           </div>
 
           <div className="flex flex-col ">
